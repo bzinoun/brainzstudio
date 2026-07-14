@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bzinoun.github.io/brainzstudio/sitemap.xml
