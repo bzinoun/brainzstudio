@@ -14,176 +14,185 @@
   <link rel="canonical" href="https://bzinoun.github.io/brainzstudio/boxing-round-timer/" />
   <meta property="og:image" content="https://bzinoun.github.io/brainzstudio/boxing-round-timer/assets/hero-boxing-round-timer.png" /><meta name="twitter:image" content="https://bzinoun.github.io/brainzstudio/boxing-round-timer/assets/hero-boxing-round-timer.png" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Boxing Round Timer", "operatingSystem": "watchOS", "applicationCategory": "HealthApplication", "description": "Start your rounds with one tap, then keep your gloves on. Boxing Round Timer runs the whole session on your wrist with bell and haptic cues for every round,…", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does Boxing Round Timer work with boxing gloves or wraps on?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every control is a large, full-width button sized to be tapped with gloves or hand wraps, and round changes are signaled by bell and haptic cues so you rarely need to look at or touch the screen mid-session."}}, {"@type": "Question", "name": "Which round formats does it support?", "acceptedAnswer": {"@type": "Answer", "text": "One-tap presets for Boxing (3x3:00), MMA (3x5:00) and Muay Thai (5x3:00), plus a Custom mode: 1 to 12 rounds, round lengths from 1:00 to 10:00 and rests from 0:15 to 3:00, in 15-second steps."}}, {"@type": "Question", "name": "Does it run on Apple Watch without my iPhone?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It runs entirely on Apple Watch (watchOS 10 and later). No phone is needed once a session is started."}}, {"@type": "Question", "name": "What cues does it give during a round?", "acceptedAnswer": {"@type": "Answer", "text": "Distinct bell and haptic cues mark round start, rest, a configurable final-seconds warning (off, 10 or 30 seconds) and session complete. You can choose haptics only, bell only, both, or silent."}}, {"@type": "Question", "name": "How much does it cost?", "acceptedAnswer": {"@type": "Answer", "text": "Boxing Round Timer is free to download for Apple Watch."}}, {"@type": "Question", "name": "Is it a good boxing timer for home heavy-bag and shadowboxing workouts?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It is built for boxers, coaches running pad or bag rounds, and home heavy-bag or shadowboxing training, with a READY countdown before the first round and automatic rest between rounds."}}]}</script>
+  <script>
+    /* Set the theme before first paint to avoid a flash. */
+    (function(){try{var t=localStorage.getItem("bz-theme");
+      if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
+      document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","light")}})();
+  </script>
   <style>
-    :root {
-      --bg: #06080b;
-      --bg-2: #0a0e14;
-      --surface: rgba(255, 255, 255, 0.035);
-      --surface-2: rgba(255, 255, 255, 0.06);
-      --text: #f3f6f9;
-      --muted: #98a4b2;
-      --faint: #6b7785;
-      --accent: #5fe3a1;
-      --accent-2: #34d399;
-      --accent-soft: rgba(95, 227, 161, 0.14);
-      --line: rgba(255, 255, 255, 0.08);
-      --line-strong: rgba(255, 255, 255, 0.14);
-      --radius: 18px;
-      --max: 1080px;
-      --shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
-      
+    :root{
+      --accent:#12a150;--accent-ink:#ffffff;--accent-on-light:#0e7d3e;--accent-on-dark:#68c38f;
+      --accent-text:var(--accent-on-light);
+      --bg:#fbfbfd; --surface:#ffffff; --surface-2:#f4f6f9; --ink:#0a0c12; --muted:#59616f; --faint:#9aa1ad;
+      --line:rgba(10,12,20,.10); --line-2:rgba(10,12,20,.055);
+      --shadow-sm:0 1px 2px rgba(12,16,28,.06), 0 1px 1px rgba(12,16,28,.04);
+      --shadow-md:0 2px 6px rgba(12,16,28,.05), 0 22px 48px -22px rgba(12,16,28,.22);
+      --shadow-watch:0 34px 66px -26px rgba(12,16,28,.34);
+      --wash:color-mix(in srgb, var(--accent) 8%, transparent);
+      --radius:18px; --max:1080px;
+      --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,system-ui,sans-serif;
+      --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Inter, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(1100px 600px at 78% -8%, rgba(95, 227, 161, 0.12), transparent 60%),
-        radial-gradient(900px 520px at 8% 0%, rgba(52, 211, 153, 0.07), transparent 55%),
-        linear-gradient(180deg, var(--bg-2), var(--bg) 40%);
-      background-attachment: fixed;
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+    :root[data-theme=dark]{
+      --accent-text:var(--accent-on-dark);
+      --bg:#0a0c10; --surface:#12151b; --surface-2:rgba(255,255,255,.045); --ink:#eef2f6; --muted:#9aa5b2; --faint:#69727e;
+      --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.06);
+      --shadow-sm:none;
+      --shadow-md:0 22px 52px -26px rgba(0,0,0,.72);
+      --shadow-watch:0 42px 84px -30px rgba(0,0,0,.85);
+      --wash:color-mix(in srgb, var(--accent) 15%, transparent);
     }
-    a { color: inherit; }
-    img { max-width: 100%; display: block; }
-    .wrap { width: min(100%, var(--max)); margin: 0 auto; padding: 0 24px; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+      -webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .3s ease,color .3s ease}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    ::selection{background:var(--wash)}
+    .wrap{width:min(100%,var(--max));margin:0 auto;padding:0 24px}
+    .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+    .kick{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-text)}
+    h1,h2,h3{letter-spacing:-.022em;margin:0}
+    p{margin:0;color:var(--muted)}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 
-    .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); background: rgba(6, 8, 11, 0.62); border-bottom: 1px solid var(--line); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 24px; width: min(100%, var(--max)); margin: 0 auto; }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; letter-spacing: -0.01em; }
-    .brand .logo { width: 34px; height: 34px; border-radius: 9px; flex: none; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: grid; place-items: center; color: #04130c; box-shadow: 0 6px 18px -6px rgba(95, 227, 161, 0.6); }
-    .brand .logo svg { width: 19px; height: 19px; }
-    .brand small { display: block; color: var(--faint); font-weight: 500; font-size: 11px; letter-spacing: 0.02em; }
-    .nav-cta { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; text-decoration: none; color: #04130c; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 8px 22px -10px rgba(95, 227, 161, 0.7); transition: transform .15s ease, box-shadow .15s ease; }
-    .nav-cta:hover { transform: translateY(-1px); }
+    /* nav */
+    .nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);
+      background:color-mix(in srgb, var(--bg) 82%, transparent);border-bottom:1px solid var(--line-2)}
+    .nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 24px;width:min(100%,var(--max));margin:0 auto}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:650;letter-spacing:-.01em}
+    .brand .logo{width:32px;height:32px;border-radius:9px;flex:none;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink);box-shadow:var(--shadow-sm)}
+    .brand .logo svg{width:18px;height:18px}
+    .brand small{display:block;color:var(--faint);font-weight:500;font-size:11px}
+    .nav-r{display:flex;align-items:center;gap:12px}
+    .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:border-color .2s ease,transform .15s ease}
+    .icon-btn:hover{border-color:var(--accent)}
+    .icon-btn svg{width:18px;height:18px}
+    .icon-btn .moon{display:none}
+    :root[data-theme=dark] .icon-btn .sun{display:none}
+    :root[data-theme=dark] .icon-btn .moon{display:block}
+    .nav-cta{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;font-size:14px;font-weight:600;color:var(--accent-ink);background:var(--accent);box-shadow:var(--shadow-sm);transition:transform .15s ease}
+    .nav-cta:hover{transform:translateY(-1px)}
 
-    section { padding: 72px 0; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
-    .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent); opacity: .7; }
-    h1, h2, h3 { letter-spacing: -0.02em; margin: 0; }
-    h2.section-h { font-size: clamp(1.5rem, 3vw, 2.1rem); margin: 14px 0 10px; }
-    .section-lead { color: var(--muted); max-width: 62ch; margin: 0 0 30px; }
-    p { margin: 0; color: var(--muted); }
+    section{padding:76px 0}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-text)}
+    h2.section-h{font-size:clamp(1.55rem,3vw,2.2rem);margin:14px 0 10px;font-weight:680}
+    .section-lead{color:var(--muted);max-width:62ch;margin:0 0 30px;font-size:1.02rem}
 
-    .hero { padding-top: 56px; }
-    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
-    .hero h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.06; margin: 18px 0 14px; }
-    .hero h1 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero-sub { font-size: 1.16rem; color: var(--text); font-weight: 500; max-width: 52ch; }
-    .promise { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 8px 14px; border-radius: 999px; background: var(--accent-soft); border: 1px solid rgba(95, 227, 161, 0.28); color: var(--text); font-size: 0.93rem; font-weight: 500; }
-    .promise svg { width: 16px; height: 16px; color: var(--accent); flex: none; }
-    .cta { display: flex; gap: 14px; margin-top: 30px; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px; border-radius: 12px; font-weight: 600; font-size: 0.98rem; text-decoration: none; border: 1px solid var(--line-strong); color: var(--text); transition: transform .15s ease, border-color .15s ease; }
-    .btn svg { width: 18px; height: 18px; }
-    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; color: #04130c; box-shadow: 0 14px 30px -12px rgba(95, 227, 161, 0.7); }
-    .btn:hover { transform: translateY(-2px); }
-    .btn.ghost:hover { border-color: var(--accent); }
-    .hero-meta { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 22px; }
-    .hero-meta div { font-size: 0.86rem; }
-    .hero-meta span { display: block; color: var(--faint); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
-    .hero-meta b { font-weight: 600; color: var(--text); }
+    /* hero */
+    .hero{padding-top:60px}
+    .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:52px;align-items:center}
+    .hero h1{font-size:clamp(2.3rem,5.4vw,3.7rem);line-height:1.03;margin:18px 0 16px;font-weight:720}
+    .hero-sub{font-size:1.18rem;color:var(--ink);font-weight:500;max-width:50ch;opacity:.9}
+    .promise{display:inline-flex;align-items:center;gap:9px;margin-top:22px;padding:8px 15px;border-radius:999px;background:var(--wash);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);color:var(--ink);font-size:.92rem;font-weight:500}
+    .promise svg{width:15px;height:15px;color:var(--accent-text);flex:none}
+    .cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:13px;font-weight:600;font-size:.98rem;border:1px solid var(--line);color:var(--ink);background:var(--surface);box-shadow:var(--shadow-sm);transition:transform .15s ease,border-color .2s ease}
+    .btn svg{width:18px;height:18px}
+    .btn.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink);box-shadow:0 14px 30px -14px color-mix(in srgb,var(--accent) 70%,transparent)}
+    .btn:hover{transform:translateY(-2px)}
+    .btn.ghost:hover{border-color:var(--accent)}
+    .hero-meta{margin-top:32px;display:flex;flex-wrap:wrap;gap:26px}
+    .hero-meta div{font-size:.86rem}
+    .hero-meta span{display:block;font-family:var(--mono);color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+    .hero-meta b{font-weight:600;color:var(--ink)}
 
-    .watch-stage { display: grid; place-items: center; position: relative; }
-    .watch { position: relative; width: min(300px, 78vw); aspect-ratio: 0.83 / 1; border-radius: 30% / 24%; padding: 13px; background: linear-gradient(150deg, #2a2d33, #15171c 45%, #1f2228); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 30px 70px -24px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.16), inset 0 -2px 6px rgba(0, 0, 0, 0.6); }
-    .watch::before { content: ""; position: absolute; right: -7px; top: 32%; width: 8px; height: 46px; border-radius: 4px; background: linear-gradient(90deg, #3a3d44, #14161a); box-shadow: inset 0 0 2px rgba(255,255,255,.25); }
-    .watch::after { content: ""; position: absolute; right: -5px; top: 56%; width: 5px; height: 30px; border-radius: 3px; background: linear-gradient(90deg, #34373d, #15171b); }
-    .watch-screen { width: 100%; height: 100%; border-radius: 26% / 21%; overflow: hidden; background: #000; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.9); }
-    .watch-screen img { width: 100%; height: 100%; object-fit: cover; }
+    /* watch fan */
+    .watch-stage{display:grid;place-items:center;position:relative}
+    .fan{position:relative;width:min(600px,96vw);height:min(540px,60vh);margin:0 auto}
+    .fan::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(closest-side,var(--wash),transparent 72%);filter:blur(24px);z-index:0}
+    .fan-item{position:absolute;top:50%;left:50%;width:min(150px,34vw);transform-origin:center}
+    .fan-float{animation:floatY 6s ease-in-out infinite}
+    @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    .watch{position:relative;width:100%;aspect-ratio:.83/1;border-radius:30%/24%;padding:12px;
+      background:linear-gradient(150deg,#26292f,#111318 46%,#1d2026);border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow-watch)}
+    .watch-screen{width:100%;height:100%;border-radius:26%/21%;overflow:hidden;background:#000;box-shadow:inset 0 0 0 1px rgba(0,0,0,.9)}
+    .watch-screen img{width:100%;height:100%;object-fit:cover}
 
-    /* cinematic hero photo band, rendered only for real assets */
-    .hero-photo-band { padding: 8px 0 12px; }
-    .hero-photo { position: relative; margin: 0; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 90px -40px rgba(0,0,0,0.9); }
-    .hero-photo img { display: block; width: 100%; height: clamp(280px, 42vw, 540px); object-fit: cover; }
-    .hero-photo-veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.35)), radial-gradient(120% 80% at 50% 0%, transparent 60%, rgba(0,0,0,0.25)); pointer-events: none; }
+    /* cinematic hero photo band */
+    .hero-photo-band{padding:6px 0 10px}
+    .hero-photo{position:relative;margin:0;border-radius:22px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-md)}
+    .hero-photo img{width:100%;height:clamp(280px,42vw,540px);object-fit:cover}
+    .hero-photo-veil{position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.28));pointer-events:none}
 
-    .fan { position: relative; width: min(620px, 96vw); height: min(560px, 62vh); margin: 0 auto; }
-    .fan::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(closest-side, var(--accent-soft), transparent 70%); filter: blur(22px); z-index: 0; }
-    .fan-item { position: absolute; top: 50%; left: 50%; width: min(152px, 34vw); transform-origin: center center; }
-    .fan-float { animation: floatY 6s ease-in-out infinite; }
-    .fan .watch { width: 100%; }
-    @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    /* entity band */
+    .entity{border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);background:var(--surface-2)}
+    .entity .wrap{padding:32px 24px}
+    .entity p{font-size:1.16rem;color:var(--ink);max-width:76ch;line-height:1.5;opacity:.92}
 
-    /* entity statement — one definitional sentence for search + AI engines */
-    .entity { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); }
-    .entity .wrap { padding-top: 30px; padding-bottom: 30px; }
-    .entity p { font-size: 1.18rem; color: var(--text); max-width: 74ch; line-height: 1.5; }
-    .entity p b { color: var(--accent); font-weight: 600; }
+    /* feature cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+    .card::before{content:"";display:block;width:28px;height:4px;border-radius:2px;background:var(--accent);margin-bottom:16px}
+    .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+    .card h3{font-size:1.08rem;margin-bottom:8px}
+    .card p{font-size:.95rem}
 
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
-    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
-    .card::before { content: ""; display: block; width: 30px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); margin-bottom: 16px; }
-    .card:hover { transform: translateY(-3px); border-color: var(--line-strong); background: var(--surface-2); }
-    .card h3 { font-size: 1.08rem; margin-bottom: 8px; }
-    .card p { font-size: 0.95rem; }
+    .split{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;align-items:start}
+    .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-sm)}
+    .panel h3{font-size:1.14rem;margin:14px 0 12px}
+    .scenario{margin-top:16px;padding:16px 18px;border-radius:12px;background:var(--wash);border:1px solid var(--line-2);border-left:3px solid var(--accent);color:var(--ink);font-size:.95rem}
+    ul.clean{list-style:none;padding:0;margin:8px 0 0}
+    ul.clean li{position:relative;padding-left:26px;margin-bottom:12px;color:var(--muted);font-size:.95rem}
+    ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:12px;height:12px;border-radius:50%;background:var(--wash);box-shadow:inset 0 0 0 2px var(--accent)}
 
-    .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start; }
-    .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
-    .panel h3 { font-size: 1.15rem; margin-bottom: 12px; }
-    .scenario { margin-top: 16px; padding: 16px 18px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line); border-left: 3px solid var(--accent); color: var(--text); font-size: 0.96rem; }
-    ul.clean { list-style: none; padding: 0; margin: 8px 0 0; }
-    ul.clean li { position: relative; padding-left: 26px; margin-bottom: 12px; color: var(--muted); font-size: 0.96rem; }
-    ul.clean li::before { content: ""; position: absolute; left: 0; top: 8px; width: 13px; height: 13px; border-radius: 50%; background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent); }
+    /* screenshots gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:26px}
+    .shot{text-align:center}
+    .shot .watch{width:min(210px,58vw);margin:0 auto}
+    .shot figcaption,.shot span{margin-top:14px;color:var(--muted);font-size:.86rem;max-width:26ch;margin-inline:auto;display:block}
 
-    .inaction { display: grid; gap: 22px; }
-    .inaction figure { margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg-2); box-shadow: var(--shadow); }
-    .inaction img { width: 100%; display: block; }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 26px; }
-    .shot { text-align: center; }
-    .shot .watch { width: min(220px, 60vw); margin: 0 auto; }
-    .shot figcaption, .shot span { margin-top: 16px; color: var(--muted); font-size: 0.88rem; max-width: 26ch; margin-inline: auto; display: block; }
+    /* in-action */
+    .inaction{display:grid;gap:22px}
+    .inaction figure{margin:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface);box-shadow:var(--shadow-md)}
+    .inaction img{width:100%}
 
-    /* FAQ — accordions, GEO-friendly Q&A */
-    .faq { display: grid; gap: 12px; margin-top: 8px; }
-    .faq-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 22px; }
-    .faq-item summary { cursor: pointer; list-style: none; padding: 16px 0; font-weight: 600; color: var(--text); font-size: 1.02rem; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after { content: "+"; color: var(--accent); font-size: 1.4rem; font-weight: 400; line-height: 1; flex: none; }
-    .faq-item[open] summary::after { content: "\2013"; }
-    .faq-a { padding: 0 0 18px; }
-    .faq-a p { font-size: 0.98rem; }
+    /* FAQ */
+    .faq{display:grid;gap:12px;margin-top:8px}
+    .faq-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:4px 22px;box-shadow:var(--shadow-sm)}
+    .faq-item summary{cursor:pointer;list-style:none;padding:17px 0;font-weight:600;font-size:1.02rem;display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .faq-item summary::-webkit-details-marker{display:none}
+    .faq-item summary::after{content:"+";color:var(--accent-text);font-size:1.4rem;font-weight:400;line-height:1;flex:none}
+    .faq-item[open] summary::after{content:"\2013"}
+    .faq-a{padding:0 0 18px}
+    .faq-a p{font-size:.98rem}
 
-    /* closing CTA */
-    .closer { text-align: center; }
-    .closer .card-cta { background: linear-gradient(160deg, var(--surface-2), var(--surface)); border: 1px solid var(--line-strong); border-radius: 26px; padding: 54px 28px; }
-    .closer h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 12px; }
-    .closer .cta { justify-content: center; }
-    .closer .price { margin-top: 18px; color: var(--faint); font-size: 0.92rem; }
+    /* closer */
+    .closer{text-align:center}
+    .closer .card-cta{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:56px 30px;box-shadow:var(--shadow-md)}
+    .closer .card-cta::before{display:none}
+    .closer h2{font-size:clamp(1.7rem,3.4vw,2.4rem);margin-bottom:12px;font-weight:720}
+    .closer .cta{justify-content:center}
+    .closer .price{margin-top:18px;font-family:var(--mono);color:var(--faint);font-size:.85rem;letter-spacing:.04em}
 
-    footer { border-top: 1px solid var(--line); padding: 36px 0; color: var(--faint); font-size: 0.88rem; }
-    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--accent); }
+    footer{border-top:1px solid var(--line-2);padding:34px 0;color:var(--faint);font-family:var(--mono);font-size:12.5px}
+    .footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
 
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
-    .reveal.in { opacity: 1; transform: none; }
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
 
-    @media (max-width: 860px) {
-      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-      .watch-stage { order: -1; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .reveal { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
-      .fan-float { animation: none !important; }
-    }
+    @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:38px}.watch-stage{order:-1}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+      .reveal{opacity:1;transform:none;transition:none}.fan-float{animation:none!important}}
   </style>
 </head>
 <body>
   <header class="nav">
-    <div class="nav-inner">
+    <div class="nav-in">
       <div class="brand">
-        <span class="logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 13V9"/><path d="M9 2h6"/></svg>
-        </span>
+        <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 13V9"/><path d="M9 2h6"/></svg></span>
         <span>Boxing Timer<small>Boxing Round Timer</small></span>
       </div>
-      <a class="nav-cta" href="#">Download
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
+      <div class="nav-r">
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark mode">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        </button>
+        <a class="nav-cta" href="#">Download
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
     </div>
   </header>
 
@@ -195,7 +204,7 @@
           <h1>Boxing Round Timer for Apple Watch</h1>
           <p class="hero-sub">Rounds, rest, and bells on your wrist.</p>
           <div class="promise">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
             Start a full round-and-rest session with one tap, then follow bell and haptic cues without touching the screen.
           </div>
           <div class="cta">
@@ -203,9 +212,7 @@
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 1.6c0 1.1-.4 2.2-1.2 3-.8.9-2 1.5-3.1 1.4-.1-1.1.4-2.2 1.1-3 .8-.8 2.1-1.4 3.2-1.4ZM20 17.3c-.5 1.3-.8 1.8-1.5 2.9-1 1.6-2.4 3.5-4.1 3.5-1.5 0-1.9-1-4-1-2 0-2.5 1-4 1-1.7 0-3-1.8-4-3.3-2.7-4-3-8.7-1.3-11.2 1.2-1.8 3-2.8 4.8-2.8 1.8 0 2.9 1 4.4 1 1.4 0 2.3-1 4.4-1 1.5 0 3.2.9 4.3 2.3-3.8 2.1-3.2 7.5.7 8.9Z"/></svg>
               Download on the App Store
             </a>
-            <a class="btn ghost" href="—">
-              —
-            </a>
+            <a class="btn ghost" href="#features">See how it works</a>
           </div>
           <div class="hero-meta">
             <div><span>For</span><b>Boxers, kickboxers, Muay Thai and MMA practitioners, coaches running pad or bag rounds, and home heavy-bag or shadowboxing athletes.</b></div>
@@ -213,126 +220,92 @@
             <div><span>Platform</span><b>Apple Watch</b></div>
           </div>
         </div>
-
         <div class="watch-stage reveal">
           <div class="fan"><div class="fan-item" style="transform:translate(-50%,-50%) translate(-52.0px,-4.0px) rotate(-4.0deg);z-index:100"><div class="fan-float" style="animation-delay:0.0s"><div class="watch"><div class="watch-screen"><img src="assets/issue-12-41mm-ready.png" alt="One-tap presets on the ready screen (41mm)" /></div></div></div></div><div class="fan-item" style="transform:translate(-50%,-50%) translate(52.0px,-4.0px) rotate(4.0deg);z-index:100"><div class="fan-float" style="animation-delay:0.5s"><div class="watch"><div class="watch-screen"><img src="assets/issue-12-45mm-ready.png" alt="One-tap presets on the ready screen (45mm)" /></div></div></div></div></div>
         </div>
       </div>
     </section>
 
-    <section class="entity">
-      <div class="wrap reveal">
-        <p>Boxing Round Timer is a watchOS app for Boxers, kickboxers, Muay Thai and MMA practitioners, coaches running pad or bag rounds, and home heavy-bag or shadowboxing athletes. It lets you start a full round-and-rest session with one tap, then follow bell and haptic cues without touching the screen.</p>
-      </div>
-    </section>
+    <section class="entity"><div class="wrap reveal"><p>Boxing Round Timer is a watchOS app for Boxers, kickboxers, Muay Thai and MMA practitioners, coaches running pad or bag rounds, and home heavy-bag or shadowboxing athletes. It lets you start a full round-and-rest session with one tap, then follow bell and haptic cues without touching the screen.</p></div></section>
 
     <section class="hero-photo-band reveal"><div class="wrap"><figure class="hero-photo"><img src="assets/hero-boxing-round-timer.png" alt="Apple Watch on a wrapped wrist showing the ROUND state of Boxing Round Timer next to a heavy bag" /><div class="hero-photo-veil"></div></figure></div></section>
 
-    <section id="features">
-      <div class="wrap reveal">
-        <span class="eyebrow">Features</span>
-        <h2 class="section-h">What it does best</h2>
-        <p class="section-lead">Pick Boxing, MMA, or Muay Thai and the session starts after a short READY countdown. Big full-width buttons, high-contrast color states, and distinct bell and haptic cues for round start, rest, warning, and the final seconds keep you working instead of poking at a screen.</p>
-        <div class="cards"><article class="card"><h3>One tap, gloves on</h3><p>Presets start with a single tap and every control is a large full-width button, so you can pause, resume, or end a session with wraps or gloves on.</p></article>
+    <section id="features"><div class="wrap reveal">
+      <span class="eyebrow">Features</span>
+      <h2 class="section-h">What it does best</h2>
+      <p class="section-lead">Pick Boxing, MMA, or Muay Thai and the session starts after a short READY countdown. Big full-width buttons, high-contrast color states, and distinct bell and haptic cues for round start, rest, warning, and the final seconds keep you working instead of poking at a screen.</p>
+      <div class="cards"><article class="card"><h3>One tap, gloves on</h3><p>Presets start with a single tap and every control is a large full-width button, so you can pause, resume, or end a session with wraps or gloves on.</p></article>
 <article class="card"><h3>Cues you can feel and hear</h3><p>Distinct haptic patterns and bell sounds mark round start, rest, the warning window, and the final three seconds. Choose haptics, bell, both, or silent.</p></article>
 <article class="card"><h3>Your rounds, your rules</h3><p>Boxing 3 x 3:00, MMA 3 x 5:00, Muay Thai 5 x 3:00, or a custom plan: up to 12 rounds, 1 to 10 minute rounds, 15 second to 3 minute rests, warning at 10 or 30 seconds or off.</p></article></div>
-      </div>
-    </section>
+    </div></section>
 
-    <section>
-      <div class="wrap reveal">
-        <div class="split">
-          <div class="panel">
-            <span class="eyebrow">Why it matters</span>
-            <h3 style="margin-top:14px">The problem it solves</h3>
-            <p>Round athletes lose the flow of a session when the timer lives on a phone across the gym or needs precise taps that gloves and wraps make impossible.</p>
-            <div class="scenario"><strong>In one minute —</strong> You are two rounds into bag work. The phone timer across the room is silent under gym music, so you drift past the round. With Boxing Round Timer, the bell and a wrist tap end the round for you, rest counts down in a different color, and the next round starts itself.</div>
-          </div>
-          <div class="panel">
-            <span class="eyebrow">Where it shines</span>
-            <h3 style="margin-top:14px">Made for these moments</h3>
-            <ul class="clean"><li>Heavy bag and shadowboxing rounds at home or in the gym</li><li>Pad work where the coach keeps both hands busy</li><li>Sparring-format conditioning with standard Boxing, MMA, or Muay Thai round lengths</li><li>Custom interval blocks such as long rounds with short rests</li></ul>
-          </div>
-        </div>
+    <section><div class="wrap reveal"><div class="split">
+      <div class="panel"><span class="eyebrow">Why it matters</span>
+        <h3>The problem it solves</h3><p>Round athletes lose the flow of a session when the timer lives on a phone across the gym or needs precise taps that gloves and wraps make impossible.</p>
+        <div class="scenario"><strong>In one minute —</strong> You are two rounds into bag work. The phone timer across the room is silent under gym music, so you drift past the round. With Boxing Round Timer, the bell and a wrist tap end the round for you, rest counts down in a different color, and the next round starts itself.</div>
       </div>
-    </section>
+      <div class="panel"><span class="eyebrow">Where it shines</span>
+        <h3>Made for these moments</h3><ul class="clean"><li>Heavy bag and shadowboxing rounds at home or in the gym</li><li>Pad work where the coach keeps both hands busy</li><li>Sparring-format conditioning with standard Boxing, MMA, or Muay Thai round lengths</li><li>Custom interval blocks such as long rounds with short rests</li></ul>
+      </div>
+    </div></div></section>
 
-    <section>
-      <div class="wrap reveal">
-        <span class="eyebrow">On your wrist</span>
-        <h2 class="section-h">Readable at a glance, every size</h2>
-        <p class="section-lead">Native simulator captures of the idle preset list. Running, rest, warning, paused, and complete states still need captures on 41mm and 45mm; validate clip-safe margins and label contrast on round screens.</p>
-        <div class="gallery"><figure class="shot"><div class="watch"><div class="watch-screen"><img src="assets/issue-12-41mm-ready.png" alt="One-tap presets on the ready screen (41mm)" /></div></div><span>One-tap presets on the ready screen (41mm)</span></figure></div>
-        <div class="gallery" style="margin-top:26px"><figure class="shot"><div class="watch"><div class="watch-screen"><img src="assets/issue-12-45mm-ready.png" alt="One-tap presets on the ready screen (45mm)" /></div></div><span>One-tap presets on the ready screen (45mm)</span></figure></div>
-        <div class="gallery" style="margin-top:26px"><p class="muted">No screenshots yet.</p></div>
-      </div>
-    </section>
+    <section><div class="wrap reveal">
+      <span class="eyebrow">On your wrist</span>
+      <h2 class="section-h">Readable at a glance, every size</h2>
+      <p class="section-lead">Native simulator captures of the idle preset list. Running, rest, warning, paused, and complete states still need captures on 41mm and 45mm; validate clip-safe margins and label contrast on round screens.</p>
+      <div class="gallery"><figure class="shot"><div class="watch"><div class="watch-screen"><img src="assets/issue-12-41mm-ready.png" alt="One-tap presets on the ready screen (41mm)" /></div></div><span>One-tap presets on the ready screen (41mm)</span></figure></div>
+      <div class="gallery" style="margin-top:26px"><figure class="shot"><div class="watch"><div class="watch-screen"><img src="assets/issue-12-45mm-ready.png" alt="One-tap presets on the ready screen (45mm)" /></div></div><span>One-tap presets on the ready screen (45mm)</span></figure></div>
+      <div class="gallery" style="margin-top:26px"><p class="muted">No screenshots yet.</p></div>
+    </div></section>
 
-    <section>
-      <div class="wrap reveal">
-        <span class="eyebrow">In action</span>
-        <h2 class="section-h">Where you'll use it</h2>
-        <p class="section-lead">Dark gym environment, chalk and canvas textures, watch UI as the only saturated light source; state colors (green/cyan/orange) carried through photo grading.</p>
-        <div class="inaction"><figure><img src="assets/in-action-start.png" alt="In-action shot 1: one-tap preset start with gloves on" /></figure><figure><img src="assets/in-action-use.png" alt="In-action shot 2: warning state glance mid-round" /></figure><figure><img src="assets/in-action-result.png" alt="In-action shot 3: session complete and one-tap repeat" /></figure></div>
-      </div>
-    </section>
+    <section><div class="wrap reveal">
+      <span class="eyebrow">In action</span>
+      <h2 class="section-h">Where you'll use it</h2>
+      <p class="section-lead">Dark gym environment, chalk and canvas textures, watch UI as the only saturated light source; state colors (green/cyan/orange) carried through photo grading.</p>
+      <div class="inaction"><figure><img src="assets/in-action-start.png" alt="In-action shot 1: one-tap preset start with gloves on" /></figure><figure><img src="assets/in-action-use.png" alt="In-action shot 2: warning state glance mid-round" /></figure><figure><img src="assets/in-action-result.png" alt="In-action shot 3: session complete and one-tap repeat" /></figure></div>
+    </div></section>
 
     <section id="faq"><div class="wrap reveal"><span class="eyebrow">FAQ</span><h2 class="section-h">Questions, answered</h2><div class="faq"><details class="faq-item"><summary>Does Boxing Round Timer work with boxing gloves or wraps on?</summary><div class="faq-a"><p>Yes. Every control is a large, full-width button sized to be tapped with gloves or hand wraps, and round changes are signaled by bell and haptic cues so you rarely need to look at or touch the screen mid-session.</p></div></details><details class="faq-item"><summary>Which round formats does it support?</summary><div class="faq-a"><p>One-tap presets for Boxing (3x3:00), MMA (3x5:00) and Muay Thai (5x3:00), plus a Custom mode: 1 to 12 rounds, round lengths from 1:00 to 10:00 and rests from 0:15 to 3:00, in 15-second steps.</p></div></details><details class="faq-item"><summary>Does it run on Apple Watch without my iPhone?</summary><div class="faq-a"><p>Yes. It runs entirely on Apple Watch (watchOS 10 and later). No phone is needed once a session is started.</p></div></details><details class="faq-item"><summary>What cues does it give during a round?</summary><div class="faq-a"><p>Distinct bell and haptic cues mark round start, rest, a configurable final-seconds warning (off, 10 or 30 seconds) and session complete. You can choose haptics only, bell only, both, or silent.</p></div></details><details class="faq-item"><summary>How much does it cost?</summary><div class="faq-a"><p>Boxing Round Timer is free to download for Apple Watch.</p></div></details><details class="faq-item"><summary>Is it a good boxing timer for home heavy-bag and shadowboxing workouts?</summary><div class="faq-a"><p>Yes. It is built for boxers, coaches running pad or bag rounds, and home heavy-bag or shadowboxing training, with a READY countdown before the first round and automatic rest between rounds.</p></div></details></div></div></section>
 
-    <section class="closer">
-      <div class="wrap reveal">
-        <div class="card-cta">
-          <h2>Boxing Round Timer for Apple Watch</h2>
-          <p class="section-lead" style="margin: 0 auto 8px;">Start a full round-and-rest session with one tap, then follow bell and haptic cues without touching the screen.</p>
-          <div class="cta">
-            <a class="btn primary" href="#">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 1.6c0 1.1-.4 2.2-1.2 3-.8.9-2 1.5-3.1 1.4-.1-1.1.4-2.2 1.1-3 .8-.8 2.1-1.4 3.2-1.4ZM20 17.3c-.5 1.3-.8 1.8-1.5 2.9-1 1.6-2.4 3.5-4.1 3.5-1.5 0-1.9-1-4-1-2 0-2.5 1-4 1-1.7 0-3-1.8-4-3.3-2.7-4-3-8.7-1.3-11.2 1.2-1.8 3-2.8 4.8-2.8 1.8 0 2.9 1 4.4 1 1.4 0 2.3-1 4.4-1 1.5 0 3.2.9 4.3 2.3-3.8 2.1-3.2 7.5.7 8.9Z"/></svg>
-              Download on the App Store
-            </a>
-          </div>
-          <div class="price">Free to download · Apple Watch</div>
+    <section class="closer"><div class="wrap reveal">
+      <div class="card card-cta">
+        <h2>Boxing Round Timer for Apple Watch</h2>
+        <p class="section-lead" style="margin:0 auto 8px;">Start a full round-and-rest session with one tap, then follow bell and haptic cues without touching the screen.</p>
+        <div class="cta">
+          <a class="btn primary" href="#">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 1.6c0 1.1-.4 2.2-1.2 3-.8.9-2 1.5-3.1 1.4-.1-1.1.4-2.2 1.1-3 .8-.8 2.1-1.4 3.2-1.4ZM20 17.3c-.5 1.3-.8 1.8-1.5 2.9-1 1.6-2.4 3.5-4.1 3.5-1.5 0-1.9-1-4-1-2 0-2.5 1-4 1-1.7 0-3-1.8-4-3.3-2.7-4-3-8.7-1.3-11.2 1.2-1.8 3-2.8 4.8-2.8 1.8 0 2.9 1 4.4 1 1.4 0 2.3-1 4.4-1 1.5 0 3.2.9 4.3 2.3-3.8 2.1-3.2 7.5.7 8.9Z"/></svg>
+            Download on the App Store
+          </a>
         </div>
+        <div class="price">Free to download · Apple Watch</div>
       </div>
-    </section>
+    </div></section>
   </main>
 
-  <footer>
-    <div class="wrap footer-inner">
-      <div>Boxing Round Timer — for Apple Watch</div>
-      <div>Free to download</div>
-    </div>
-  </footer>
+  <footer><div class="wrap footer-inner">
+    <div>Boxing Round Timer — for Apple Watch</div>
+    <div>Free to download</div>
+  </div></footer>
 
   <script>
-    (function () {
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-      }, { threshold: 0.12 });
-      els.forEach(function (e) { io.observe(e); });
+    (function(){
+      var btn=document.getElementById("themeToggle");
+      if(btn)btn.addEventListener("click",function(){
+        var cur=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";
+        document.documentElement.setAttribute("data-theme",cur);
+        try{localStorage.setItem("bz-theme",cur)}catch(e){}
+      });
+      var els=document.querySelectorAll(".reveal");
+      if(!("IntersectionObserver" in window)){els.forEach(function(e){e.classList.add("in")});return}
+      var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.12});
+      els.forEach(function(e){io.observe(e)});
     })();
-
-    (function () {
-      var fan = document.querySelector('.fan');
-      if (!fan) return;
-      var items = Array.prototype.slice.call(fan.querySelectorAll('.fan-item'));
-      if (items.length < 2) return;
-      var slots = items.map(function (it) {
-        var fl = it.querySelector('.fan-float');
-        return { t: it.style.transform, z: it.style.zIndex, d: fl ? fl.style.animationDelay : '' };
-      });
-      for (var i = items.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = items[i]; items[i] = items[j]; items[j] = tmp;
-      }
-      items.forEach(function (it, idx) {
-        var s = slots[idx];
-        it.style.transform = s.t;
-        it.style.zIndex = s.z;
-        var fl = it.querySelector('.fan-float');
-        if (fl) fl.style.animationDelay = s.d;
-      });
+    (function(){
+      var fan=document.querySelector(".fan");if(!fan)return;
+      var items=[].slice.call(fan.querySelectorAll(".fan-item"));if(items.length<2)return;
+      var slots=items.map(function(it){var f=it.querySelector(".fan-float");return{t:it.style.transform,z:it.style.zIndex,d:f?f.style.animationDelay:""}});
+      for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=items[i];items[i]=items[j];items[j]=tmp}
+      items.forEach(function(it,idx){var s=slots[idx];it.style.transform=s.t;it.style.zIndex=s.z;var f=it.querySelector(".fan-float");if(f)f.style.animationDelay=s.d})
     })();
   </script>
 </body>
